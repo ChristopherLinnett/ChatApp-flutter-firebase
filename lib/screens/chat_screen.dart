@@ -1,8 +1,7 @@
 import 'package:chat_app_firebase_flutter/widgets/chat/messages.dart';
+import 'package:chat_app_firebase_flutter/widgets/chat/new_message.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -20,28 +19,27 @@ class ChatScreen extends StatelessWidget {
             itemBuilder: (ctx) {
               return [
                 PopupMenuItem(
-                    value: 'logout',
-                    child: TextButton.icon(
-                        icon: Icon(Icons.logout),
-                        label: Text('Log Out'),
-                        onPressed: () async {
-                          FirebaseAuth.instance.signOut();
-                        }))
+                  value: 'logout',
+                  child: TextButton.icon(
+                    icon: Icon(Icons.logout),
+                    label: Text('Log Out'),
+                    onPressed: () async {
+                      FirebaseAuth.instance.signOut();
+                    },
+                  ),
+                ),
               ];
             },
-          )
+          ),
         ],
       ),
       body: Column(
-        children: [Expanded(child: Messages())],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          FirebaseFirestore.instance
-              .collection('chats/u9IvdMTKzNbfo0Eo72lM/messages')
-              .add({'text': 'this was added by clicking button'});
-        },
+        children: const [
+          Expanded(
+            child: Messages(),
+          ),
+          NewMessage(),
+        ],
       ),
     );
   }

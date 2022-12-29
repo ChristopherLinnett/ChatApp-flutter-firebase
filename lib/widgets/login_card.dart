@@ -149,9 +149,6 @@ class _LoginCardState extends State<LoginCard> {
                               : 'Register'),
                     ),
                     TextButton(
-                        child: Text(authMode == AuthMode.login
-                            ? 'Create Account'
-                            : 'Swith to Log in'),
                         onPressed: widget.showLoader
                             ? () {}
                             : () {
@@ -160,7 +157,10 @@ class _LoginCardState extends State<LoginCard> {
                                       ? authMode = AuthMode.signUp
                                       : authMode = AuthMode.login;
                                 });
-                              }),
+                              },
+                        child: Text(authMode == AuthMode.login
+                            ? 'Create Account'
+                            : 'Swith to Log in')),
                   ],
                 )),
           ),
