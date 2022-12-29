@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 
 class ChatBubble extends StatelessWidget {
-  const ChatBubble({super.key, required this.message, required this.isMe});
+  const ChatBubble(
+      {super.key,
+      required this.message,
+      required this.isMe,
+      this.username = ''});
+  final String username;
   final String message;
   final bool isMe;
-
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      crossAxisAlignment:
+          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
-        if (isMe) Spacer(),
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 15.0),
           margin: EdgeInsets.only(
               top: 10.0,
               bottom: 10.0,
-              left: isMe ? 100.0 : 1.0,
-              right: isMe ? 1.0 : 100.0),
+              left: isMe ? 60.0 : 5.0,
+              right: isMe ? 5.0 : 60.0),
           decoration: BoxDecoration(
             color: isMe
                 ? Theme.of(context).primaryColorDark
@@ -29,26 +34,24 @@ class ChatBubble extends StatelessWidget {
             ),
           ),
           child: Column(
+            crossAxisAlignment:
+                isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
             children: [
-              Container(
-                child: Text(
-                  message,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                ),
+              Text(
+                isMe ? 'You' : username,
+                textAlign: isMe ? TextAlign.end : TextAlign.start,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onPrimary),
               ),
-              Container(
-                height: 5.0,
-                decoration: BoxDecoration(
-                  color: isMe ? Colors.lightBlueAccent : Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(isMe ? 0.0 : 10.0),
-                    topRight: Radius.circular(10.0),
-                    bottomLeft: Radius.circular(10.0),
-                    bottomRight: Radius.circular(isMe ? 10.0 : 0.0),
-                  ),
+              Text(
+                message,
+                textAlign: isMe ? TextAlign.end : TextAlign.start,
+                softWrap: true,
+                maxLines: 10,
+                style: TextStyle(
+                  fontSize: 16.0,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
             ],

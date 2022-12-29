@@ -10,14 +10,24 @@ class NewMessage extends StatefulWidget {
 }
 
 class _NewMessageState extends State<NewMessage> {
-  void _sendMessage() {
+  Future<void> _sendMessage() async {
+    if (_enteredMessage.text.isEmpty) {
+      return;
+    }
     FocusScope.of(context).unfocus();
+    final user = FirebaseAuth.instance.currentUser;
+    final userDetails = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user?.uid)
+        .get();
     FirebaseFirestore.instance.collection('chat').add({
       'text': _enteredMessage.text,
       'time': DateTime.now().toIso8601String(),
-      'sender': FirebaseAuth.instance.currentUser?.uid
+      'sender': FirebaseAuth.instance.currentUser?.uid,
+      'username': userDetails['username']
     });
     _enteredMessage.clear();
+    _enteredMessage.text = '';
   }
 
   final TextEditingController _enteredMessage = TextEditingController();
@@ -40,7 +50,8 @@ class _NewMessageState extends State<NewMessage> {
                 decoration: InputDecoration(
                   hintText: 'Send Message',
                   focusedBorder: InputBorder.none,
-                  
+                  errorBorder: InputBorder.none,
+                  border: InputBorder.none,
                 ),
                 onChanged: (value) {
                   setState(() {
