@@ -1,5 +1,7 @@
 import 'package:chat_app_firebase_flutter/firebase_options.dart';
+import 'package:chat_app_firebase_flutter/screens/chat_screen.dart';
 import 'package:chat_app_firebase_flutter/screens/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -16,29 +18,36 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorSchemeSeed: Colors.green,
-        brightness: Brightness.light,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 10)),
-            elevation: MaterialStateProperty.all(5),
-            textStyle: MaterialStateProperty.all(
-              Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 18),
-            ),
-            shape: MaterialStateProperty.all(
-              const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(20),
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorSchemeSeed: Colors.green,
+          brightness: Brightness.light,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+              padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(horizontal: 24, vertical: 10)),
+              elevation: MaterialStateProperty.all(5),
+              textStyle: MaterialStateProperty.all(
+                Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 18),
+              ),
+              shape: MaterialStateProperty.all(
+                const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),
-      home: const LoginScreen(),
-    );
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: ((context, snapshot) {
+              if (snapshot.hasData) {
+                return ChatScreen();
+              } else {
+                return LoginScreen();
+              }
+            })));
   }
 }
