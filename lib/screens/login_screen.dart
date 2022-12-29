@@ -9,11 +9,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  void _submitAuthForm({
+    required Map userDetails,
+    required AuthMode authMode,
+  }) {
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: LoginCard(),
+      body: LoginCard(authCallback: _submitAuthForm),
     );
   }
 }
