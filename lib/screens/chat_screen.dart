@@ -14,21 +14,21 @@ class ChatScreen extends StatelessWidget {
         builder: (context, messageSnapshot) {
           final messages = messageSnapshot.data?.docs;
           if (messages == null) {
-            return CircularProgressIndicator.adaptive();
+            return const CircularProgressIndicator.adaptive();
           }
           return messageSnapshot.connectionState == ConnectionState.waiting
-              ? Center(child: CircularProgressIndicator.adaptive())
+              ? const Center(child: CircularProgressIndicator.adaptive())
               : ListView.builder(
                   itemCount: messages.length,
                   itemBuilder: ((context, index) => Container(
-                        padding: EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(8),
                         child: Text(messages[index]['text']),
                       )),
                 );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           FirebaseFirestore.instance
               .collection('chats/u9IvdMTKzNbfo0Eo72lM/messages')

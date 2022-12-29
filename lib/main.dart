@@ -1,5 +1,4 @@
 import 'package:chat_app_firebase_flutter/firebase_options.dart';
-import 'package:chat_app_firebase_flutter/screens/chat_screen.dart';
 import 'package:chat_app_firebase_flutter/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -24,13 +23,13 @@ class MyApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             padding: MaterialStateProperty.all(
-                EdgeInsets.symmetric(horizontal: 24, vertical: 10)),
+                const EdgeInsets.symmetric(horizontal: 24, vertical: 10)),
             elevation: MaterialStateProperty.all(5),
             textStyle: MaterialStateProperty.all(
               Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 18),
             ),
             shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
+              const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(20),
                 ),
