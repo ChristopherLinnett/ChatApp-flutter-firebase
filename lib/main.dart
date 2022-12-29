@@ -20,8 +20,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorSchemeSeed: Colors.green,
-          brightness: Brightness.light,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          primaryColorDark: Color.fromARGB(255, 4, 52, 92),
+          backgroundColor: Color.fromARGB(255, 3, 94, 168),
+          canvasColor: Colors.blue.shade300,
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(
               padding: MaterialStateProperty.all(

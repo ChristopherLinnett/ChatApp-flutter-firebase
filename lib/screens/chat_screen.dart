@@ -13,9 +13,16 @@ class ChatScreen extends StatelessWidget {
         title: Text('Your Chat'),
         actions: [
           PopupMenuButton(
-            offset: Offset(0, 40),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(0.0),
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30.0))),
+            elevation: 20,
+            offset: Offset(-25, 30),
             icon: Icon(Icons.more_vert),
-            color: Theme.of(context).primaryIconTheme.color,
+            color: Theme.of(context).canvasColor,
             itemBuilder: (ctx) {
               return [
                 PopupMenuItem(

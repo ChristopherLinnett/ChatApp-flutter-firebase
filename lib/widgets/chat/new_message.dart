@@ -24,15 +24,23 @@ class _NewMessageState extends State<NewMessage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+        height: 75,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(30),
+            ),
+            color: Theme.of(context).colorScheme.onPrimary),
         margin: EdgeInsets.only(top: 8),
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 3),
         child: Row(
           children: [
             Expanded(
               child: TextField(
                 controller: _enteredMessage,
                 decoration: InputDecoration(
-                  label: Text('Send Message'),
+                  hintText: 'Send Message',
+                  focusedBorder: InputBorder.none,
+                  
                 ),
                 onChanged: (value) {
                   setState(() {
