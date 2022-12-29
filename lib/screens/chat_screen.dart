@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -6,12 +7,33 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: 10,
-        itemBuilder: ((context, index) => Container(
-              padding: EdgeInsets.all(8),
-              child: Text('Message'),
-            )),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('chats/u9IvdMTKzNbfo0Eo72lM/messages')
+            .snapshots(),
+        builder: (context, messageSnapshot) {
+          final messages = messageSnapshot.data?.docs;
+          if (messages == null) {
+            return CircularProgressIndicator.adaptive();
+          }
+          return messageSnapshot.connectionState == ConnectionState.waiting
+              ? Center(child: CircularProgressIndicator.adaptive())
+              : ListView.builder(
+                  itemCount: messages.length,
+                  itemBuilder: ((context, index) => Container(
+                        padding: EdgeInsets.all(8),
+                        child: Text(messages[index]['text']),
+                      )),
+                );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          FirebaseFirestore.instance
+              .collection('chats/u9IvdMTKzNbfo0Eo72lM/messages')
+              .add({'text': 'this was added by clicking button'});
+        },
       ),
     );
   }
