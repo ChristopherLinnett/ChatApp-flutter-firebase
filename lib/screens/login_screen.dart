@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chat_app_firebase_flutter/widgets/login_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,9 +15,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
   var isLoading = false;
+
   Future<void> _submitAuthForm(
       {required Map userDetails,
       required AuthMode authMode,
+      File? image,
       required BuildContext ctx}) async {
     UserCredential authResult;
 

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:chat_app_firebase_flutter/widgets/photo_upload.dart';
 import 'package:flutter/material.dart';
 
 enum AuthMode { signUp, login }
@@ -8,6 +11,7 @@ class LoginCard extends StatefulWidget {
   final void Function(
       {required Map userDetails,
       required AuthMode authMode,
+      File? image,
       required BuildContext ctx}) authCallback;
   final bool showLoader;
 
@@ -17,6 +21,7 @@ class LoginCard extends StatefulWidget {
 
 class _LoginCardState extends State<LoginCard> {
   final _formKey = GlobalKey<FormState>();
+  File? _newUserImage;
   AuthMode authMode = AuthMode.login;
   Map<String, String> userDetails = {
     'email': '',
@@ -25,24 +30,45 @@ class _LoginCardState extends State<LoginCard> {
   };
   String _pass1 = '';
 
+  void imageUpdater(File image) {
+    _newUserImage = image;
+  }
+
   void _trySubmit() {
     FocusScope.of(context).unfocus();
+
+    if (authMode == AuthMode.signUp && _newUserImage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Please Add an Image to Sign Up',
+            textAlign: TextAlign.center,
+          ),
+          backgroundColor: Theme.of(context).errorColor,
+        ),
+      );
+      return;
+    }
+
     final isValid = _formKey.currentState?.validate();
     if (isValid != null && isValid) {
       _formKey.currentState?.save();
       _formKey.currentState?.reset();
       widget.authCallback(
-          userDetails: userDetails, authMode: authMode, ctx: context);
+          userDetails: userDetails,
+          authMode: authMode,
+          image: _newUserImage,
+          ctx: context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Card(
-        elevation: 60,
-        margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-        child: SingleChildScrollView(
+      child: SingleChildScrollView(
+        child: Card(
+          elevation: 60,
+          margin: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16),
             child: Form(
@@ -51,6 +77,8 @@ class _LoginCardState extends State<LoginCard> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    if (authMode == AuthMode.signUp)
+                      PhotoUpload(imageUpdater: imageUpdater),
                     const SizedBox(
                       height: 30,
                     ),
@@ -125,7 +153,7 @@ class _LoginCardState extends State<LoginCard> {
                           userDetails['password'] = newValue ?? '';
                         }),
                         decoration: const InputDecoration(
-                          labelText: "password",
+                          labelText: "Confirm Password",
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
