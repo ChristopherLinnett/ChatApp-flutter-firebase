@@ -16,7 +16,8 @@ class _PhotoUploadState extends State<PhotoUpload> {
 
   void _pickImage() async {
     final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await picker.pickImage(
+        source: ImageSource.camera, imageQuality: 50, maxWidth: 250);
     if (image == null) {
       return;
     }

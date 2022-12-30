@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chat_app_firebase_flutter/widgets/login_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -33,12 +34,22 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
             email: userDetails['email'], password: userDetails['password']);
+
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('user_image')
+            .child('${authResult.user?.uid ?? ''}.jpg');
+        var url;
+        await ref.putFile(image!).whenComplete(() async {
+          url = await ref.getDownloadURL();
+        });
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user!.uid)
             .set({
           'email': userDetails['email'],
-          'username': userDetails['username']
+          'username': userDetails['username'],
+          'image_url': url
         });
       }
     } on FirebaseAuthException catch (e) {
@@ -57,12 +68,11 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Theme.of(ctx).errorColor,
         ),
       );
-    } catch (error) {
-      print(error);
-    } finally {
       setState(() {
         isLoading = false;
       });
+    } catch (error) {
+      print(error);
     }
   }
 

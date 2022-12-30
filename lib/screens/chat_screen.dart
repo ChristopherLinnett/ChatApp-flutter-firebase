@@ -32,6 +32,7 @@ class ChatScreen extends StatelessWidget {
                     label: Text('Log Out'),
                     onPressed: () async {
                       FirebaseAuth.instance.signOut();
+                      Navigator.of(context).pop();
                     },
                   ),
                 ),
