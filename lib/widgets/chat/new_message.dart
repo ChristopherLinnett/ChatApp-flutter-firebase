@@ -24,7 +24,8 @@ class _NewMessageState extends State<NewMessage> {
       'text': _enteredMessage.text,
       'time': DateTime.now().toIso8601String(),
       'sender': FirebaseAuth.instance.currentUser?.uid,
-      'username': userDetails['username']
+      'username': userDetails['username'] ?? '',
+      'image_url': userDetails['image_url']
     });
     _enteredMessage.clear();
     _enteredMessage.text = '';

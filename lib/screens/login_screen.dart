@@ -39,10 +39,13 @@ class _LoginScreenState extends State<LoginScreen> {
             .ref()
             .child('user_image')
             .child('${authResult.user?.uid ?? ''}.jpg');
-        var url;
+        String? url;
         await ref.putFile(image!).whenComplete(() async {
           url = await ref.getDownloadURL();
         });
+        if (url == null) {
+          return;
+        }
         await FirebaseFirestore.instance
             .collection('users')
             .doc(authResult.user!.uid)

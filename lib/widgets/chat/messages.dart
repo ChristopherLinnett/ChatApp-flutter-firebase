@@ -17,7 +17,6 @@ class Messages extends StatelessWidget {
           if (chatSnapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator.adaptive());
           }
-
           if (chatSnapshot.data == null) {
             return Center(
               child: Text('ERROR'),
@@ -32,7 +31,8 @@ class Messages extends StatelessWidget {
                 message: chatDocs[index]['text'],
                 isMe: chatDocs[index]['sender'] ==
                     FirebaseAuth.instance.currentUser?.uid.toString(),
-                username: chatDocs[index]['username']),
+                username: chatDocs[index]['username'],
+                imageUrl: chatDocs[index]['image_url']),
           );
         });
   }
